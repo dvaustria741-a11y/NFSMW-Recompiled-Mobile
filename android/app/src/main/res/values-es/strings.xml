@@ -100,6 +100,8 @@
     <string name="estirar_resumen">Apagado: la imagen 16:9 de la Xbox 360, con barras negras. Encendido: llena la pantalla, pero deforma la imagen.</string>
     <string name="mostrar_fps">Mostrar fps</string>
     <string name="mostrar_fps_resumen">Contador en la esquina: fotogramas por segundo y milisegundos por fotograma.</string>
+    <string name="juego_ingles">Juego en inglés</string>
+    <string name="juego_ingles_resumen">Manda el inglés como idioma de la consola. Desactívalo para usar el idioma de la edición del juego. Se aplica la próxima vez que pulses Jugar.</string>
 
     <!-- Gráficos -->
     <string name="seccion_graficos">Gráficos</string>

@@ -10,6 +10,10 @@ proyecto vibe-codeado: ver la sección "This fork" del [README](README.md).
 
 ### Añadido
 
+- "Juego en inglés" en los ajustes, activado por defecto: se le pasa al juego el inglés (idioma 1 de
+  Xbox 360) como idioma de la consola aunque el APK sea de la PAL España, que va en español. Al
+  desactivarlo vuelve el de la edicion. Sin probar en un movil: si el disco no trae el texto en
+  ingles, se desactiva. `Ajustes.ingles`, `Ajustes.idiomaJuego`.
 - El juego se puede elegir tambien como CARPETA ya extraida (la que tiene `default.xex`, `NFS` y
   `Movies`), ademas de como ISO. Hace falta Android 11 o superior y el permiso de acceso a todos los
   archivos, que la app pide al pulsar "Elegir carpeta del juego": el motor lee la carpeta por su
