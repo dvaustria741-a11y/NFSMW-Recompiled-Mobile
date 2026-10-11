@@ -71,6 +71,18 @@ final class IsoXex {
         }
     }
 
+    /** El default.xex de una carpeta con el juego ya extraido; una carpeta no puede estar incompleta a este nivel. */
+    static Info mirarCarpeta(java.io.File xex) {
+        if (xex == null || !xex.isFile() || xex.length() <= 0 || xex.length() > MAX_XEX) {
+            return null;
+        }
+        try (FileInputStream in = new FileInputStream(xex)) {
+            return new Info(hex(resumen(leer(in.getChannel(), 0, (int) xex.length()))), 0);
+        } catch (IOException | RuntimeException e) {
+            return null;
+        }
+    }
+
     private static Info mirar(FileChannel canal) throws IOException {
         for (long base : BASES) {
             ByteBuffer vd = leer(canal, base + 32L * SECTOR, 28);

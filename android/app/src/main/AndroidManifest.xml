@@ -13,6 +13,11 @@
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <!-- Solo para elegir el juego como CARPETA (ya extraido): el motor la lee
+         por su ruta, y el selector de carpetas del sistema no da rutas. Con la
+         ISO no hace falta: va por URI. -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+
     <!-- Es un juego: appCategory es lo que leen Android 12+ (modo de juego y
          panel de juegos) y los lanzadores; isGame, el indicador de antes, lo
          siguen mirando los lanzadores de juegos de algunos fabricantes. -->

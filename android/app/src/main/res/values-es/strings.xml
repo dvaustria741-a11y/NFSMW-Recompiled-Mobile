@@ -81,6 +81,12 @@
     <string name="iso_elegida">ISO: %1$s</string>
     <string name="elegir_iso">Elegir ISO…</string>
     <string name="iso_sin_permiso">Android no ha dado permiso permanente para esa ISO. Elígela desde el almacenamiento del móvil.</string>
+    <string name="elegir_carpeta">Elegir carpeta del juego…</string>
+    <string name="carpeta_elegida">Carpeta: %1$s</string>
+    <string name="carpeta_permiso">Permite el acceso a todos los archivos para esta app y vuelve a elegir la carpeta.</string>
+    <string name="carpeta_android10">Elegir una carpeta necesita Android 11 o superior. Usa la ISO.</string>
+    <string name="carpeta_sin_xex">Esa carpeta no tiene default.xex. Elige la que contiene default.xex, NFS y Movies.</string>
+    <string name="carpeta_ruta">Android no ha dado una ruta para esa carpeta. Elígela en el almacenamiento interno o en una tarjeta SD.</string>
     <string name="jugar">Jugar</string>
     <string name="jugar_sin_iso">Elige tu ISO para jugar.</string>
     <string name="jugar_sin_juego">Este APK no trae el juego.</string>

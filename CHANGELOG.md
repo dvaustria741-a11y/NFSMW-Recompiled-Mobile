@@ -10,6 +10,12 @@ proyecto vibe-codeado: ver la sección "This fork" del [README](README.md).
 
 ### Añadido
 
+- El juego se puede elegir tambien como CARPETA ya extraida (la que tiene `default.xex`, `NFS` y
+  `Movies`), ademas de como ISO. Hace falta Android 11 o superior y el permiso de acceso a todos los
+  archivos, que la app pide al pulsar "Elegir carpeta del juego": el motor lee la carpeta por su
+  ruta, y el selector de carpetas del sistema solo da URIs. Si se elige la carpeta de arriba y el
+  juego esta en su unica subcarpeta, se usa esa. La ISO sigue igual, sin permiso extra. Sin probar
+  en un movil: `SetupActivity.elegirCarpeta`, `IsoXex.mirarCarpeta`.
 - Ajustes de partida para GPU debiles (Adreno 5xx y hasta la 620, Mali hasta la G68, PowerVR; p. ej.
   Snapdragon 650, 660, 695): la primera vez que se abre la app, y solo en lo que el usuario no haya
   elegido nunca, se ponen 1024x576, 30 fps, sin suavizado, bufer de pantalla a 720p, anisotropico 2x,

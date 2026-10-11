@@ -88,6 +88,12 @@
     <string name="iso_elegida">ISO: %1$s</string>
     <string name="elegir_iso">Choose ISO…</string>
     <string name="iso_sin_permiso">Android did not grant permanent access to that ISO. Pick it from the phone\'s storage.</string>
+    <string name="elegir_carpeta">Choose game folder…</string>
+    <string name="carpeta_elegida">Folder: %1$s</string>
+    <string name="carpeta_permiso">Allow access to all files for this app, then choose the folder again.</string>
+    <string name="carpeta_android10">Choosing a folder needs Android 11 or newer. Use the ISO instead.</string>
+    <string name="carpeta_sin_xex">That folder has no default.xex. Choose the folder that contains default.xex, NFS and Movies.</string>
+    <string name="carpeta_ruta">Android did not give a path for that folder. Pick one from the phone\'s internal storage or an SD card.</string>
     <string name="jugar">Play</string>
     <string name="jugar_sin_iso">Choose your ISO to play.</string>
     <string name="jugar_sin_juego">This APK does not include the game.</string>

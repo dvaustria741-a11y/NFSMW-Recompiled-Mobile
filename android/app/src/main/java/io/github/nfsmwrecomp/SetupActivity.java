@@ -15,7 +15,10 @@ import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.os.VibratorManager;
+import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
+import android.provider.Settings;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -59,6 +62,8 @@ import java.util.function.Consumer;
 public class SetupActivity extends AppCompatActivity {
 
     private static final int PEDIR_ISO = 1;
+    private static final int PEDIR_CARPETA = 7;
+    private static final int PEDIR_ACCESO_TOTAL = 8;
     private static final int PEDIR_DRIVER = 2;
 
     private static final int ACENTO = 0xFF6F7432;
@@ -217,6 +222,11 @@ public class SetupActivity extends AppCompatActivity {
             startActivityForResult(i, PEDIR_ISO);
         });
 
+        MaterialButton elegirCarpeta = new MaterialButton(this);
+        elegirCarpeta.setText(R.string.elegir_carpeta);
+        estilarBotonSecundario(elegirCarpeta);
+        elegirCarpeta.setOnClickListener(v -> elegirCarpeta());
+
         botonJugar = new MaterialButton(this);
         botonJugar.setText(R.string.jugar);
         botonJugar.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
@@ -243,6 +253,7 @@ public class SetupActivity extends AppCompatActivity {
             textoEdicion,
             espacio(8),
             elegirIso,
+            elegirCarpeta,
             boxJugar
         ));
 
@@ -895,7 +906,8 @@ public class SetupActivity extends AppCompatActivity {
         String nombre = ajustes.nombreIso();
         textoIso.setText(ajustes.iso() == null
                 ? getString(R.string.sin_iso, BuildConfig.EDICION)
-                : getString(R.string.iso_elegida, nombre != null ? nombre : ajustes.iso()));
+                : getString(esCarpeta(ajustes.iso()) ? R.string.carpeta_elegida : R.string.iso_elegida,
+                        nombre != null ? nombre : ajustes.iso()));
         // El APK lleva el codigo de una sola edicion del juego: se dice cual y,
         // si el default.xex de la ISO elegida es otro o a la ISO le falta el
         // final, se avisa. No se impide jugar: lo que no se ha podido leer no
@@ -1006,14 +1018,105 @@ public class SetupActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    private static boolean esCarpeta(String iso) {
+        return iso != null && iso.startsWith("/");
+    }
+
+    /** Elegir el juego como carpeta ya extraida: pide acceso a todos los archivos y luego el selector de carpetas. */
+    private void elegirCarpeta() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            Toast.makeText(this, R.string.carpeta_android10, Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!Environment.isExternalStorageManager()) {
+            Toast.makeText(this, R.string.carpeta_permiso, Toast.LENGTH_LONG).show();
+            Intent i = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            try {
+                startActivityForResult(i, PEDIR_ACCESO_TOTAL);
+            } catch (RuntimeException e) {
+                startActivityForResult(new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION),
+                        PEDIR_ACCESO_TOTAL);
+            }
+            return;
+        }
+        startActivityForResult(new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), PEDIR_CARPETA);
+    }
+
+    /** content://...tree/primary:Download/NFS -> /storage/emulated/0/Download/NFS; null si no es almacenamiento de archivos. */
+    private static File rutaDeArbol(Uri arbol) {
+        String id;
+        try {
+            id = DocumentsContract.getTreeDocumentId(arbol);
+        } catch (RuntimeException e) {
+            return null;
+        }
+        int dos = id.indexOf(':');
+        if (dos < 0) {
+            return null;
+        }
+        String volumen = id.substring(0, dos);
+        String resto = id.substring(dos + 1);
+        File raiz = volumen.equalsIgnoreCase("primary")
+                ? Environment.getExternalStorageDirectory()
+                : new File("/storage/" + volumen);
+        return resto.isEmpty() ? raiz : new File(raiz, resto);
+    }
+
+    /** El default.xex de la carpeta, sin importar mayusculas; null si no esta. */
+    private static File xexDe(File carpeta) {
+        File[] hijos = carpeta.listFiles();
+        if (hijos != null) {
+            for (File f : hijos) {
+                if (f.isFile() && f.getName().equalsIgnoreCase("default.xex")) {
+                    return f;
+                }
+            }
+        }
+        return null;
+    }
+
+    /** La carpeta elegida o, si el juego esta en la unica subcarpeta que hay, esa. */
+    private static File raizDelJuego(File carpeta) {
+        if (xexDe(carpeta) != null) {
+            return carpeta;
+        }
+        File[] hijos = carpeta.listFiles(File::isDirectory);
+        if (hijos != null && hijos.length == 1 && xexDe(hijos[0]) != null) {
+            return hijos[0];
+        }
+        return null;
+    }
+
     @Override
     protected void onActivityResult(int peticion, int resultado, Intent datos) {
         super.onActivityResult(peticion, resultado, datos);
+        if (peticion == PEDIR_ACCESO_TOTAL) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()) {
+                startActivityForResult(new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), PEDIR_CARPETA);
+            }
+            return;
+        }
         if (resultado != RESULT_OK || datos == null || datos.getData() == null) {
             return;
         }
         Uri uri = datos.getData();
-        if (peticion == PEDIR_ISO) {
+        if (peticion == PEDIR_CARPETA) {
+            File carpeta = rutaDeArbol(uri);
+            if (carpeta == null || !carpeta.isDirectory()) {
+                Toast.makeText(this, R.string.carpeta_ruta, Toast.LENGTH_LONG).show();
+                return;
+            }
+            File juego = raizDelJuego(carpeta);
+            if (juego == null) {
+                Toast.makeText(this, R.string.carpeta_sin_xex, Toast.LENGTH_LONG).show();
+                return;
+            }
+            ajustes.iso(juego.getAbsolutePath());
+            ajustes.nombreIso(juego.getName());
+            ajustes.isoSinMirar();
+            mirarIso();
+        } else if (peticion == PEDIR_ISO) {
             try {
                 getContentResolver().takePersistableUriPermission(uri,
                         Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -1050,7 +1153,9 @@ public class SetupActivity extends AppCompatActivity {
         }
         final Context app = getApplicationContext();
         new Thread(() -> {
-            IsoXex.Info info = IsoXex.mirar(app, Uri.parse(iso));
+            IsoXex.Info info = esCarpeta(iso)
+                    ? IsoXex.mirarCarpeta(xexDe(new File(iso)))
+                    : IsoXex.mirar(app, Uri.parse(iso));
             runOnUiThread(() -> {
                 if (iso.equals(ajustes.iso())) {
                     // Vacio = no se pudo leer; asi no se reintenta en cada arranque.
