@@ -474,8 +474,10 @@ public class SetupActivity extends AppCompatActivity {
         avanzado.addView(soloXenos(interruptor(R.string.exposicion, R.string.exposicion_resumen, ajustes.exposicionFiel(), ajustes::exposicionFiel)));
         avanzado.addView(soloXenos(interruptor(R.string.memexport, R.string.memexport_resumen, ajustes.lecturaMemexport(), ajustes::lecturaMemexport)));
         avanzado.addView(soloXenos(interruptor(R.string.paginas, R.string.paginas_resumen, ajustes.refrescarPaginas(), ajustes::refrescarPaginas)));
-        // En release no hay registro: el interruptor no haria nada.
-        if (BuildConfig.DEBUG) {
+        if (!BuildConfig.DEBUG) {
+            avanzado.addView(interruptor(R.string.guardar_registro, R.string.guardar_registro_resumen, ajustes.guardarRegistro(), ajustes::guardarRegistro));
+        }
+        if (BuildConfig.DEBUG || ajustes.guardarRegistro()) {
             avanzado.addView(interruptor(R.string.registro_detallado, R.string.registro_detallado_resumen, ajustes.registroDetallado(), ajustes::registroDetallado));
         }
         // Motor nativo: su emulacion de la GPU, para las GPU que no pueden con el renderizador.

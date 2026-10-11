@@ -164,6 +164,8 @@
     <string name="paginas_resumen">Coherencia de memoria. Puede costar rendimiento.</string>
     <string name="registro_detallado">Registro detallado</string>
     <string name="registro_detallado_resumen">log_level=debug. Hunde los fps: solo para diagnosticar problemas.</string>
+    <string name="guardar_registro">Guardar registro</string>
+    <string name="guardar_registro_resumen">Escribe un fichero de registro para diagnosticar problemas, en Download/NFSMW-logs si la app tiene acceso a todos los archivos. Se aplica la próxima vez que pulses Jugar.</string>
     <string name="probar_vulkan">Probar Vulkan</string>
     <string name="probar_vulkan_resumen">Carga el driver de la GPU y comprueba qué soporta, sin el juego.</string>
     <string name="sin_informe">Sin informe de la sonda todavía. Pulsa «Probar Vulkan».</string>

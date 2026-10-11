@@ -182,6 +182,8 @@
     <string name="paginas_resumen">Memory coherence. May cost performance.</string>
     <string name="registro_detallado">Detailed log</string>
     <string name="registro_detallado_resumen">log_level=debug. It tanks the fps: only for diagnosing problems.</string>
+    <string name="guardar_registro">Save log</string>
+    <string name="guardar_registro_resumen">Writes a log file for diagnosing problems, to Download/NFSMW-logs if the app has access to all files. Applies the next time you press Play.</string>
     <string name="probar_vulkan">Test Vulkan</string>
     <string name="probar_vulkan_resumen">Loads the GPU driver and checks what it supports, without the game.</string>
     <string name="sin_informe">No probe report yet. Tap “Test Vulkan”.</string>

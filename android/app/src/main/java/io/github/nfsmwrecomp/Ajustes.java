@@ -104,6 +104,25 @@ final class Ajustes {
     }
 
     boolean registroDetallado() { return p.getBoolean("registro", false); }
+
+    /**
+     * Guardar el registro tambien en release (en debug siempre se guarda). Va a
+     * Download/NFSMW-logs si la app tiene acceso a todos los archivos y, si no, a
+     * la carpeta de logs de la app.
+     */
+    boolean guardarRegistro() { return p.getBoolean("guardar_registro", false); }
+    void guardarRegistro(boolean v) { p.edit().putBoolean("guardar_registro", v).apply(); }
+
+    static File carpetaRegistro(Context ctx) {
+        if (android.os.Build.VERSION.SDK_INT >= 30 && android.os.Environment.isExternalStorageManager()) {
+            File f = new File(android.os.Environment.getExternalStoragePublicDirectory(
+                    android.os.Environment.DIRECTORY_DOWNLOADS), "NFSMW-logs");
+            if (f.isDirectory() || f.mkdirs()) {
+                return f;
+            }
+        }
+        return carpetaLogs(ctx);
+    }
     void registroDetallado(boolean v) { p.edit().putBoolean("registro", v).apply(); }
 
     // --- Rendimiento y graficos. Los valores por defecto son los del SDK: lo
@@ -494,7 +513,7 @@ final class Ajustes {
         }
         a.add("--user_data_root=" + carpetaDatos(ctx).getAbsolutePath());
 
-        if (!BuildConfig.DEBUG) {
+        if (!BuildConfig.DEBUG && !guardarRegistro()) {
             // Release: sin registro, ni en fichero ni en logcat (el SDK copia
             // cada linea a logcat en Android, y con "off" no llega a ningun
             // sitio). /dev/null y no vacio: sin log_file el SDK se inventa una
@@ -504,7 +523,7 @@ final class Ajustes {
             a.add("--log_level=off");
         } else {
             String log = sonda ? "sonda.log" : "nfsmw.log";
-            a.add("--log_file=" + new File(carpetaLogs(ctx), log).getAbsolutePath());
+            a.add("--log_file=" + new File(carpetaRegistro(ctx), log).getAbsolutePath());
             // info, no debug: lo caro es 'debug', que hace que el plugin de GPU
             // escriba una linea POR FOTOGRAMA en almacenamiento compartido (FUSE)
             // y hunde los fps. Con info son unas pocas lineas por partida, y ahi

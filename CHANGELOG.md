@@ -10,6 +10,9 @@ proyecto vibe-codeado: ver la sección "This fork" del [README](README.md).
 
 ### Añadido
 
+- "Guardar registro" en Avanzado (solo en release): escribe el registro del juego en
+  `Download/NFSMW-logs` (o en la carpeta de logs de la app si no hay acceso a todos los archivos),
+  para diagnosticar problemas sin compilar una version debug. `Ajustes.guardarRegistro`.
 - "Juego en inglés" en los ajustes, activado por defecto: se le pasa al juego el inglés (idioma 1 de
   Xbox 360) como idioma de la consola aunque el APK sea de la PAL España, que va en español. Al
   desactivarlo vuelve el de la edicion. Sin probar en un movil: si el disco no trae el texto en
