@@ -109,8 +109,6 @@
     <string name="estirar_resumen">Off: the Xbox 360\'s 16:9 image, with black bars. On: fills the screen, but distorts the image.</string>
     <string name="mostrar_fps">Show FPS</string>
     <string name="mostrar_fps_resumen">Corner counter: frames per second and milliseconds per frame.</string>
-    <string name="juego_ingles">Game in English</string>
-    <string name="juego_ingles_resumen">Sends English as the console language. Turn it off to use the language of the game\'s edition. Applies the next time you press Play.</string>
 
     <!-- Graphics -->
     <string name="seccion_graficos">Graphics</string>

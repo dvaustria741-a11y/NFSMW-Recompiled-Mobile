@@ -262,8 +262,7 @@ public class SetupActivity extends AppCompatActivity {
             seccion(R.string.seccion_pantalla),
             selectorResolucion(),
             interruptor(R.string.estirar, R.string.estirar_resumen, ajustes.estirar(), ajustes::estirar),
-            interruptor(R.string.mostrar_fps, R.string.mostrar_fps_resumen, ajustes.mostrarFps(), ajustes::mostrarFps),
-            interruptor(R.string.juego_ingles, R.string.juego_ingles_resumen, ajustes.ingles(), ajustes::ingles)
+            interruptor(R.string.mostrar_fps, R.string.mostrar_fps_resumen, ajustes.mostrarFps(), ajustes::mostrarFps)
         ));
 
         // --- Controles tactiles: el editor va en su propia pantalla

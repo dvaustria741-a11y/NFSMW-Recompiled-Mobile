@@ -158,14 +158,6 @@ final class Ajustes {
         return RES_480P.equals(resolucion) ? 720 : RES_720P.equals(resolucion) ? 1280 : 0;
     }
 
-    /**
-     * El juego en ingles, aunque la edicion del APK sea otra (la PAL Espana viene en
-     * espanol). Es el idioma de Xbox 360 que se le pasa al juego: 1 = ingles.
-     */
-    boolean ingles() { return p.getBoolean("juego_ingles", true); }
-    void ingles(boolean v) { p.edit().putBoolean("juego_ingles", v).apply(); }
-    int idiomaJuego() { return ingles() ? 1 : BuildConfig.JUEGO_IDIOMA; }
-
     boolean mostrarFps() { return p.getBoolean("mostrar_fps", true); }
     void mostrarFps(boolean v) { p.edit().putBoolean("mostrar_fps", v).apply(); }
 
@@ -504,7 +496,7 @@ final class Ajustes {
         // El idioma y el pais de la consola, los de la edicion del juego con la
         // que se compilo el APK (PAL Espana: 5 y 31; USA: 1 y 103). Salen de
         // app/generated-android/edicion.json, via build.gradle.kts.
-        a.add("--user_language=" + idiomaJuego());
+        a.add("--user_language=" + BuildConfig.JUEGO_IDIOMA);
         a.add("--user_country=" + BuildConfig.JUEGO_PAIS);
         // Un solo argumento aunque lleve espacios: va en el array, sin shell.
         String gamertag = gamertag();

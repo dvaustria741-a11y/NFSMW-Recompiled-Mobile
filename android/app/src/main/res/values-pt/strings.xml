@@ -100,8 +100,6 @@
     <string name="estirar_resumen">Desligado: a imagem 16:9 do Xbox 360, com barras pretas. Ligado: preenche a tela, mas distorce a imagem.</string>
     <string name="mostrar_fps">Mostrar FPS</string>
     <string name="mostrar_fps_resumen">Contador no canto: quadros por segundo e milissegundos por quadro.</string>
-    <string name="juego_ingles">Jogo em inglês</string>
-    <string name="juego_ingles_resumen">Envia o inglês como idioma do console. Desative para usar o idioma da edição do jogo. Vale na próxima vez que tocar em Jogar.</string>
 
     <!-- Gráficos -->
     <string name="seccion_graficos">Gráficos</string>

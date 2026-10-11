@@ -221,7 +221,7 @@ final class MotorNativo {
         if (ajustes.fijarHilos()) {
             a.add("--thread_affinity=auto");
         }
-        a.add("--user_language=" + ajustes.idiomaJuego());
+        a.add("--user_language=" + BuildConfig.JUEGO_IDIOMA);
         a.add("--user_country=" + BuildConfig.JUEGO_PAIS);
         String gamertag = ajustes.gamertag();
         if (Ajustes.gamertagValido(gamertag) && !gamertag.isEmpty()) {
